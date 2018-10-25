@@ -8,13 +8,20 @@ import java.awt.Canvas;
 
 import javax.swing.JFrame;
 
+import com.mime.nothinglefttolose.graphics.Render;
+
 public class Display extends Canvas implements Runnable {
 	public static final int WIDTH = 800;
 	public static final int HEIGHT = 600;
-	public static final String TITLE = "Nothing Left to Lose Pre-Alpha 0.02";
+	public static final String TITLE = "Nothing Left to Lose Pre-Alpha 0.03";
 
 	private Thread thread;
 	private boolean running = false;
+	private Render render;
+	
+	public Display() {
+		render = new Render(WIDTH, HEIGHT);
+	}
 
 	public void start() {
 		if (running)
@@ -41,9 +48,18 @@ public class Display extends Canvas implements Runnable {
 	@Override
 	public void run() {
 		while(running) {
-			
+			tick();
+			render();
 		}
 
+	}
+	
+	private void tick() {
+		
+	}
+	
+	private void render() {
+		
 	}
 
 	public static void main(String[] args) {
