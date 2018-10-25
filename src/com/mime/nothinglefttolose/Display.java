@@ -1,36 +1,46 @@
 /**
  * Based on The Cherno's tutorial on YouTube
- * video 2: https://youtu.be/0zuVHDNYPQU
+ *
  */
 package com.mime.nothinglefttolose;
 
 import java.awt.Canvas;
+import java.awt.Graphics;
+import java.awt.image.BufferStrategy;
+import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferInt;
 
 import javax.swing.JFrame;
 
 import com.mime.nothinglefttolose.graphics.Render;
+import com.mime.nothinglefttolose.graphics.Screen;
 
 public class Display extends Canvas implements Runnable {
 	public static final int WIDTH = 800;
 	public static final int HEIGHT = 600;
-	public static final String TITLE = "Nothing Left to Lose Pre-Alpha 0.03";
+	public static final String TITLE = "Nothing Left to Lose Pre-Alpha 0.04";
 
 	private Thread thread;
-	private boolean running = false;
+	private Screen screen;
+	private BufferedImage img;
 	private Render render;
-	
+	private boolean running = false;
+	private int[] pixels;
+
 	public Display() {
-		render = new Render(WIDTH, HEIGHT);
+		screen = new Screen(WIDTH, HEIGHT);
+		img = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
+		pixels = ((DataBufferInt) img.getRaster().getDataBuffer()).getData();
 	}
 
 	public void start() {
 		if (running)
 			return;
 		running = true;
-		thread = new Thread();
+		thread = new Thread(this); // fix from Pre-Alpha 0.03, needed to pass this to Thread()
 		thread.start();
-		
-		System.out.println("Working!");
+
+		System.out.println("thread.start() working!");
 	}
 
 	private void stop() {
@@ -47,19 +57,35 @@ public class Display extends Canvas implements Runnable {
 
 	@Override
 	public void run() {
-		while(running) {
+		while (running) {
 			tick();
 			render();
 		}
 
 	}
-	
+
 	private void tick() {
-		
+
 	}
-	
+
 	private void render() {
-		
+		BufferStrategy bs = this.getBufferStrategy();
+		if (bs == null) {
+			createBufferStrategy(3); // 3D game
+			return;
+		}
+
+		screen.render();
+
+		for (int i = 0; i < WIDTH * HEIGHT; i++) {
+			pixels[i] = screen.pixels[i];
+		}
+
+		Graphics g = bs.getDrawGraphics();
+		g.drawImage(img, 0, 0, WIDTH, HEIGHT, null);
+		g.dispose();
+		bs.show();
+
 	}
 
 	public static void main(String[] args) {
@@ -75,7 +101,7 @@ public class Display extends Canvas implements Runnable {
 		frame.setVisible(true);
 
 		System.out.println("Running...");
-		
+
 		game.start();
 
 	}
