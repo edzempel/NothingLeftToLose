@@ -4,8 +4,7 @@
  */
 package com.mime.nothinglefttolose;
 
-import java.awt.Canvas;
-import java.awt.Graphics;
+import java.awt.*;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
@@ -18,16 +17,22 @@ import com.mime.nothinglefttolose.graphics.Screen;
 public class Display extends Canvas implements Runnable {
 	public static final int WIDTH = 800;
 	public static final int HEIGHT = 600;
-	public static final String TITLE = "Nothing Left to Lose Pre-Alpha 0.07";
+	public static final String TITLE = "Nothing Left to Lose Pre-Alpha 0.08";
 
 	private Thread thread;
 	private Screen screen;
+	private Game game;
 	private BufferedImage img;
 	private boolean running = false;
 	private int[] pixels;
 
 	public Display() {
+		Dimension size = new Dimension(WIDTH, HEIGHT);
+		setPreferredSize(size);
+		setMinimumSize(size);
+		setMaximumSize(size);
 		screen = new Screen(WIDTH, HEIGHT);
+		game = new Game();
 		img = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
 		pixels = ((DataBufferInt) img.getRaster().getDataBuffer()).getData();
 	}
@@ -92,6 +97,7 @@ public class Display extends Canvas implements Runnable {
 	}
 
 	private void tick() {
+		game.tick();
 
 	}
 
@@ -102,7 +108,7 @@ public class Display extends Canvas implements Runnable {
 			return;
 		}
 
-		screen.render();
+		screen.render(game);
 
 		for (int i = 0; i < WIDTH * HEIGHT; i++) {
 			pixels[i] = screen.pixels[i];
@@ -123,7 +129,7 @@ public class Display extends Canvas implements Runnable {
 		frame.setTitle(TITLE);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // stop program when close button  on window pressed
 		frame.setLocationRelativeTo(null);
-		frame.setSize(WIDTH, HEIGHT);
+		//frame.setSize(WIDTH, HEIGHT);
 		frame.setResizable(false);
 		frame.setVisible(true);
 
