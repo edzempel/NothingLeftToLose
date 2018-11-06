@@ -18,7 +18,7 @@ import com.mime.nothinglefttolose.graphics.Screen;
 public class Display extends Canvas implements Runnable {
 	public static final int WIDTH = 800;
 	public static final int HEIGHT = 600;
-	public static final String TITLE = "Nothing Left to Lose Pre-Alpha 0.06";
+	public static final String TITLE = "Nothing Left to Lose Pre-Alpha 0.07";
 
 	private Thread thread;
 	private Screen screen;
@@ -56,9 +56,37 @@ public class Display extends Canvas implements Runnable {
 
 	@Override
 	public void run() {
+		int frames = 0; // amount of frames that are rendered
+		double unprocessedSeconds = 0; // amount of seconds that aren't recorded yet
+		long previousTime = System.nanoTime(); // 64 bit integer, most precise available system time
+		double secondsPerTick = 1 / 60.0;
+		int tickCount = 0;
+		boolean ticked = false;
+		
+		// fps counter
 		while (running) {
-			tick();
+			long currentTime = System.nanoTime();
+			long passedTime = currentTime - previousTime;
+			previousTime = currentTime;
+			unprocessedSeconds += passedTime / 1000000000.0; // nano is 1 billion
+			
+			while (unprocessedSeconds > secondsPerTick) {
+				tick();
+				unprocessedSeconds -= secondsPerTick;
+				ticked = true;
+				tickCount++;
+				if (tickCount % 60 == 0) {
+					System.out.println(frames + " fps");
+					previousTime += 1000;
+					frames = 0;	
+				}
+			}
+			if (ticked == true) {
+				render();
+				frames++;
+			}
 			render();
+			frames++;
 		}
 
 	}

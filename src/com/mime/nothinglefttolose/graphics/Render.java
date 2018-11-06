@@ -16,12 +16,12 @@ public class Render {
 	public void draw(Render render, int xOffset, int yOffset) {
 		for (int y = 0; y < render.height; y++) {
 			int yPix = y + yOffset;
-			if (yPix < 0 || yPix >= Display.HEIGHT) {
+			if (yPix < 0 || yPix >= height) {
 				continue; // skip if out of vertical bounds
 			}
 			for (int x = 0; x < render.width; x++) {
 				int xPix = x + xOffset;
-				if (xPix < 0 || xPix >= Display.WIDTH) {
+				if (xPix < 0 || xPix >= width) {
 					continue;
 				}
 
