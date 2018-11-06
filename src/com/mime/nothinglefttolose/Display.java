@@ -18,12 +18,11 @@ import com.mime.nothinglefttolose.graphics.Screen;
 public class Display extends Canvas implements Runnable {
 	public static final int WIDTH = 800;
 	public static final int HEIGHT = 600;
-	public static final String TITLE = "Nothing Left to Lose Pre-Alpha 0.045";
+	public static final String TITLE = "Nothing Left to Lose Pre-Alpha 0.06";
 
 	private Thread thread;
 	private Screen screen;
 	private BufferedImage img;
-	private Render render;
 	private boolean running = false;
 	private int[] pixels;
 

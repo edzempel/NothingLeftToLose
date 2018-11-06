@@ -25,8 +25,12 @@ public class Render {
 					continue;
 				}
 
-				pixels[xPix + yPix * width] = render.pixels[x + y * render.width];
-				//System.out.println("x: " + x + " y: " + y);
+				// only render what is visible
+				int alpha = render.pixels[x + y * render.width];
+				if (alpha > 0) {
+					pixels[xPix + yPix * width] = render.pixels[x + y * render.width];
+					// System.out.println("x: " + x + " y: " + y);
+				}
 			}
 		}
 	}
