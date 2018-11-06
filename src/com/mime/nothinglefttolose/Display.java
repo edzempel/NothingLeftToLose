@@ -18,7 +18,7 @@ import com.mime.nothinglefttolose.graphics.Screen;
 public class Display extends Canvas implements Runnable {
 	public static final int WIDTH = 800;
 	public static final int HEIGHT = 600;
-	public static final String TITLE = "Nothing Left to Lose Pre-Alpha 0.04";
+	public static final String TITLE = "Nothing Left to Lose Pre-Alpha 0.045";
 
 	private Thread thread;
 	private Screen screen;
@@ -94,7 +94,7 @@ public class Display extends Canvas implements Runnable {
 		frame.add(game);
 		frame.pack();
 		frame.setTitle(TITLE);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // stop program when close button  on window pressed
 		frame.setLocationRelativeTo(null);
 		frame.setSize(WIDTH, HEIGHT);
 		frame.setResizable(false);

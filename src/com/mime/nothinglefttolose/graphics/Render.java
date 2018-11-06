@@ -1,5 +1,7 @@
 package com.mime.nothinglefttolose.graphics;
 
+import com.mime.nothinglefttolose.Display;
+
 public class Render {
 	public final int width;
 	public final int height;
@@ -14,10 +16,17 @@ public class Render {
 	public void draw(Render render, int xOffset, int yOffset) {
 		for (int y = 0; y < render.height; y++) {
 			int yPix = y + yOffset;
+			if (yPix < 0 || yPix >= Display.HEIGHT) {
+				continue; // skip if out of vertical bounds
+			}
 			for (int x = 0; x < render.width; x++) {
 				int xPix = x + xOffset;
+				if (xPix < 0 || xPix >= Display.WIDTH) {
+					continue;
+				}
 
 				pixels[xPix + yPix * width] = render.pixels[x + y * render.width];
+				//System.out.println("x: " + x + " y: " + y);
 			}
 		}
 	}
